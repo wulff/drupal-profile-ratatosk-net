@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Image feature.
+ */
+
+include_once 'ratatosk_images.features.inc';

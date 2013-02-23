@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Install file for the ratatosk.net install profile.
+ */
+
+/* --- HOOKS ---------------------------------------------------------------- */
+
+/**
+ * Implementation of hook_install().
+ */
+function ratatosk_install() {
+  // enable default permissions for system roles
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access comments', 'access content'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access comments', 'access content')); // , $filtered_html_permission
+
+  // create a default role for site administrators, with all available permissions assigned.
+  $admin_role = new stdClass();
+  $admin_role->name = 'administrator';
+  $admin_role->weight = 2;
+  user_role_save($admin_role);
+  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
+  // Set this as the administrator role.
+  variable_set('user_admin_role', $admin_role->rid);
+
+  // assign user 1 the "administrator" role
+  db_insert('users_roles')
+    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
+    ->execute();
+
+  // get rid of default book content type
+  node_type_delete('book');
+  variable_del('node_options_book');
+
+  // fix default contact category
+  db_update('contact')
+    ->fields(array(
+      'category' => 'Feedback',
+      'recipients' => 'wulff@ratatosk.net',
+    ))
+    ->condition('cid', 1, '=')
+    ->execute();
+
+  // set some variables
+  variable_set('file_public_path', 'files/ratatosk.net');
+}

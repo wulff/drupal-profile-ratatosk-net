@@ -1,0 +1,68 @@
+name = Ratatosk.net
+description = Drupal installation profile for ratatosk.net.
+version = 1.x-dev
+core = 7.x
+
+; core modules
+
+dependencies[] = block
+dependencies[] = book
+dependencies[] = comment
+dependencies[] = contact
+dependencies[] = contextual
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = search
+
+; contrib modules
+
+dependencies[] = admin_menu
+dependencies[] = ctools
+dependencies[] = diff
+dependencies[] = entitycache
+dependencies[] = features
+dependencies[] = field_group
+dependencies[] = file_entity
+dependencies[] = flatcomments
+dependencies[] = insert
+dependencies[] = libraries
+dependencies[] = markdown
+dependencies[] = media
+dependencies[] = mediafield
+dependencies[] = menu_block
+dependencies[] = menu_position
+dependencies[] = pathauto
+dependencies[] = redirect
+dependencies[] = strongarm
+dependencies[] = token
+dependencies[] = typogrify
+dependencies[] = views
+dependencies[] = views_ui
+
+; features
+
+ratatosk_features[] = ratatosk_config
+ratatosk_features[] = ratatosk_theme
+
+; features - content types
+
+ratatosk_features[] = ratatosk_blog
+ratatosk_features[] = ratatosk_page
+
+; features - extensions
+
+ratatosk_features[] = ratatosk_comments
+ratatosk_features[] = ratatosk_images
+ratatosk_features[] = ratatosk_tags
+
+; features - channels
+
+ratatosk_features[] = ratatosk_web

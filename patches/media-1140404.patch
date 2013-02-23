@@ -1,0 +1,86 @@
+diff --git a/js/media.js b/js/media.js
+index 9463def..0447378 100644
+--- a/js/media.js
++++ b/js/media.js
+@@ -25,6 +25,7 @@ Drupal.behaviors.mediaElement = {
+       var previewField = $('.preview', this);
+       var editButton = $('.edit', this);
+       var removeButton = $('.remove', this);
++      var insertButton = $('.insert', this);
+ 
+       // Hide the edit and remove buttons if there is no file data yet.
+       if (fidField.val() == 0) {
+@@ -32,6 +33,7 @@ Drupal.behaviors.mediaElement = {
+           editButton.hide();
+         }
+         removeButton.hide();
++        insertButton.hide();
+       }
+ 
+       // When someone clicks the link to pick media (or clicks on an existing thumbnail)
+@@ -62,6 +64,30 @@ Drupal.behaviors.mediaElement = {
+         e.preventDefault();
+       });
+ 
++      // When someone clicks the Insert button.
++      $('.insert', this).bind('click', function (e) {
++        var editor = $('#edit-body textarea.text-full').get(0);
++        var fid = fidField.val();
++
++        if (fid > 0) {
++          var content = '[[{"type":"media","fid":' + fid + ',"view_mode":"full","attributes":{"class":"media-image media-element file-media-full"}}]]';
++          var scroll = editor.scrollTop;
++
++          if (editor.selectionStart || editor.selectionStart == '0') {
++            var startPos = editor.selectionStart;
++            var endPos = editor.selectionEnd;
++            editor.value = editor.value.substring(0, startPos) + content + editor.value.substring(endPos, editor.value.length);
++          }
++          else {
++            editor.value += content;
++          }
++
++          editor.scrollTop = scroll;
++        }
++
++        e.preventDefault();
++      });
++
+       // Show or hide the edit/remove buttons if the field has a file or not.
+       $('.fid', this).bind('change', function() {
+         if (fidField.val() == 0) {
+@@ -69,6 +95,7 @@ Drupal.behaviors.mediaElement = {
+             editButton.hide();
+           }
+           removeButton.hide();
++          insertButton.hide();
+         }
+         else {
+           if (editButton.length) {
+@@ -81,6 +108,7 @@ Drupal.behaviors.mediaElement = {
+             editButton.show();
+           }
+           removeButton.show();
++          insertButton.show();
+         }
+       });
+     });
+diff --git a/media.module b/media.module
+index b54af54..d9da788 100644
+--- a/media.module
++++ b/media.module
+@@ -963,6 +963,14 @@ function media_element_process(&$element, &$form_state, $form) {
+     '#options' => array('fragment' => FALSE, 'external' => TRUE),
+     '#weight' => 30,
+   );
++  $element['insert'] = array(
++    '#type' => 'link',
++    '#href' => '',
++    '#title' => t('Insert media'),
++    '#attributes' => array('class' => array('button', 'insert')),
++    '#options' => array('fragment' => FALSE, 'external' => TRUE),
++    '#weight' => 40,
++  );
+ 
+   $element['fid'] = array(
+     '#type' => 'hidden',

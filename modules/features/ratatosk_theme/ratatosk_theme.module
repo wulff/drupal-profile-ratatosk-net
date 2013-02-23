@@ -1,0 +1,50 @@
+<?php
+/**
+ * @file
+ * Code for the Theme feature.
+ */
+
+include_once 'ratatosk_theme.features.inc';
+
+/* --- HOOKS ---------------------------------------------------------------- */
+
+/**
+ * Implements hook_menu().
+ */
+function ratatosk_theme_menu() {
+  $items = array();
+
+  $items['ratatosk/dummy'] = array(
+    'title' => 'Empty page',
+    'page callback' => 'ratatosk_theme_empty_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function ratatosk_theme_theme_registry_alter(&$theme_registry) {
+  if (!empty($theme_registry['filter_tips']['function'])) {
+    $theme_registry['filter_tips']['function'] = 'ratatosk_theme_filter_tips';
+  }
+}
+
+/* --- CALLBACKS ------------------------------------------------------------ */
+
+/**
+ * Menu callback; return an empty page for the content block on the front page.
+ */
+function ratatosk_theme_empty_page() {
+  return '';
+}
+
+/**
+ * Theme callback; hide filter tips in all themes.
+ */
+function ratatosk_theme_filter_tips($variables) {
+  return '';
+}
